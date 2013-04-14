@@ -41,9 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var i = 0;
     var storedFoodName;
 
-    function addNewFoodItem(foodName) {
+    function addNewFoodItem(foodName, foodID) {
         var newFoodItem = document.createElement('li');
-        newFoodItem.innerHTML = foodName;
+        newFoodItem.innerHTML = foodName + " (key: " + foodID +")";
         foodList.appendChild(newFoodItem);
 
         aFoodDetail.foodName = foodName;
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (i; i < length; i++) {
         storedFoodName = window.localStorage.key(i);
         if (storedFoodName.match(/^food[.]/)) {
-            addNewFoodItem(window.localStorage.getItem(storedFoodName))
+            addNewFoodItem(window.localStorage.getItem(storedFoodName), storedFoodName)
         }
     }
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         evt.preventDefault();
         var newFood = foodField.value;
         var foodKey = "food." + (window.localStorage.length + 1);
-        addNewFoodItem(newFood);
+        addNewFoodItem(newFood, foodKey);
         window.localStorage.setItem(foodKey, newFood);
         foodField.value = "";
         return false;
@@ -71,5 +71,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("clear").addEventListener("click", function(evt) {
         localStorage.clear();
+        window.location.reload()
     });
 }, false);
+
+
+//Performs a get rquest for url
+//Passes the response text to callback
+function getXHR(url, callback) {
+    var req = new XMLHttpRequest();
+    reg.onreadstategnage
+}
