@@ -18,8 +18,8 @@ function renderOurTemplate(view, callback) {
         doRender(storedTemplate, view);
     } else {
         console.log("template isn't stored - need to request it");
-        var reg = new XMLHttpRequest();
-        reg.onreadystatechange = function () {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.status == 200 || this.status == 0) {
                     storedTemplate = this.responseText;
@@ -29,8 +29,8 @@ function renderOurTemplate(view, callback) {
                 }
             }
         }
-        reg.open("GET", "food_detail.mustache", true);
-        reg.send();
+        req.open("GET", "food_detail.mustache", true);
+        req.send();
     }
 }
 document.addEventListener("DOMContentLoaded", function () {
@@ -80,5 +80,15 @@ document.addEventListener("DOMContentLoaded", function () {
 //Passes the response text to callback
 function getXHR(url, callback) {
     var req = new XMLHttpRequest();
-    reg.onreadstategnage
+    req.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 200 || this.status == 0) {
+                callback(this.responseText);
+            } else {
+                console.log('something went wrong')
+            }
+        }
+    }
+    req.open ('GET', url, true);
+    req.send();
 }
