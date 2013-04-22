@@ -43,3 +43,10 @@ document.addEventListener('click', function (evt) {
         oldScreenEle.style.webkitTransform = 'translate(-320px,0px)';
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    function emptyClicker() {};
+    screens.forEach(function(screenId){
+        document.getElementById(screenId).addEventListener('click', emptyClicker);
+    });
+});
