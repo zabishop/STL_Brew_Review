@@ -53,21 +53,18 @@
 
 
 var breweries = new Array(
-    
+
 );
 
-
+/* #1 */
 document.addEventListener("DOMContentLoaded", function () {
     getXHR('http://stlbrewreview.com/breweries.json', getBreweries);
     var breweryList = document.getElementById('breweryList');
-    //var length = window.localStorage.length;
-    //var i = 0;
-    x$('ul').click(function(){
-        alert('worked');
-    });
+
 }, false);
 
 
+/* #2 */
 function getXHR(url, callback) {
     var req = new XMLHttpRequest();
     req.onreadystatechange = function () {
@@ -89,18 +86,90 @@ function getBreweries(JSONstring) {
     var i = 1;
     for (i; i < JSONobj.length; i++) {
         breweries[i] = JSONobj[i];
-        console.log(breweries[i].name);
-        console.log(breweries[i].address);
+        addBreweryToLocalStorage(breweries[i]);
         addBreweryToList(breweries[i]);
     }
+    listenAfterContentLoaded();
 }
 
-function addBreweryToList(brewery){
+function addBreweryToList(brewery) {
     var breweryList = document.getElementById('breweryList');
     var newBrewery = brewery;
     var newBreweryListItem = document.createElement('li');
+    newBreweryListItem.setAttribute('data-id', brewery.id);
     newBreweryListItem.innerHTML = newBrewery.name;
     breweryList.appendChild(newBreweryListItem);
+    x$('li').addClass('item');
 }
 
+function listenAfterContentLoaded() {
+    x$(".item").click(function () {
+        var breweryID = this.getAttribute('data-id');
+        //populateDetailsPanel(breweryID);
+        var breweryName = getBreweryName(breweryID);
+        var breweryAddress = getBreweryAddress(breweryID);
 
+        var breweryDetailPanel = document.getElementById('breweryDetails');
+        var newDetailTitle = document.createElement('h2');
+        var newAddressParagraph = document.createElement('p');
+
+        newDetailTitle.innerHTML = breweryName;
+        newAddressParagraph.innerHTML = breweryAddress;
+
+        breweryDetailPanel.appendChild(newDetailTitle);
+        breweryDetailPanel.appendChild(newAddressParagraph);
+
+        x$("#breweryList").removeClass('active');
+        x$("#breweryDetails").addClass('active');
+    });
+}
+
+function getBreweryName (id) {
+    var breweryNameKey = "name." + id;
+    var breweryName = window.localStorage.getItem(breweryNameKey);
+    return breweryName;
+}
+function getBreweryAddress(id) {
+    var addressKey = "address." + id;
+    var breweryAddress = window.localStorage.getItem(addressKey);
+    return breweryAddress;
+}
+
+function addBreweryToLocalStorage(breweryArrayToStore) {
+    var id = breweryArrayToStore.id;
+    var id_key = "id." + id;
+    var address_key = "address." + id;
+    var created_at_key = "created." + id;
+    var description_key = "description." + id;
+    var email_key = "email." + id;
+    var facebook_url_key = "facebook_url." + id;
+    var image_left_key = "image_left." + id;
+    var image_top_key = "image_top." + id;
+    var image_url_key = "image_url." + id;
+    var name_key = "name." + id;
+    var phone_key = "phone." + id;
+    var phone_number_key = "phone_number." + id;
+    var rss_url_key = "rss_url." + id;
+    var short_name_key = "short_name." + id;
+    var twitter_handle_key = "twitter_handle." + id;
+    var updated_at_key = "updated_at." + id;
+    var website_url_key = "website_url." + id;
+
+    window.localStorage.setItem(id_key, id);
+    window.localStorage.setItem(address_key, breweryArrayToStore.address);
+    window.localStorage.setItem(created_at_key, breweryArrayToStore.created_at);
+    window.localStorage.setItem(description_key, breweryArrayToStore.description);
+    window.localStorage.setItem(email_key, breweryArrayToStore.email);
+    window.localStorage.setItem(facebook_url_key, breweryArrayToStore.facebook_url);
+    window.localStorage.setItem(image_left_key, breweryArrayToStore.image_left);
+    window.localStorage.setItem(image_top_key, breweryArrayToStore.image_top);
+    window.localStorage.setItem(image_url_key, breweryArrayToStore.image_url);
+    window.localStorage.setItem(name_key, breweryArrayToStore.name);
+    window.localStorage.setItem(phone_key, breweryArrayToStore.phone);
+    window.localStorage.setItem(phone_number_key, breweryArrayToStore.phone_number);
+    window.localStorage.setItem(rss_url_key, breweryArrayToStore.rss_url);
+    window.localStorage.setItem(short_name_key, breweryArrayToStore.short_name);
+    window.localStorage.setItem(twitter_handle_key, breweryArrayToStore.twitter_handle);
+    window.localStorage.setItem(updated_at_key, breweryArrayToStore.updated_at);
+    window.localStorage.setItem(website_url_key, breweryArrayToStore.website_url);
+}

@@ -3,24 +3,47 @@ html {
 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-ul {
+ul.contentPanel {
     background: white;
     text-align: center;
     list-style: none;
     border-radius: 10px;
     width: 95%;
     margin: 2.5%;
+
 }
 
-ul li {
+ul.contentPanel li.item {
     padding: 10px 0;
     display: block;
     width: 100%;
     border-bottom: 1px solid black;
+    z-index: 3;
+    cursor: pointer;
 }
 
-ul li:last-child {
+ul.contentPanel li:last-child {
     border: none;
+}
+
+ul#breweryList {
+    position: absolute;
+    z-index: 1;
+    left: 100%;
+}
+
+ul#breweryDetails {
+    height: 100px;
+    position: absolute;
+    z-index: 1;
+    right: 100%;
+}
+
+ul#breweryDetails.active,
+ul#breweryList.active{
+    position: absolute;
+    left: 0%;
+    z-index: 1;
 }
 
 h1 {
