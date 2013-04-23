@@ -105,26 +105,51 @@ function addBreweryToList(brewery) {
 function listenAfterContentLoaded() {
     x$(".item").click(function () {
         var breweryID = this.getAttribute('data-id');
-        //populateDetailsPanel(breweryID);
-        var breweryName = getBreweryName(breweryID);
-        var breweryAddress = getBreweryAddress(breweryID);
-
-        var breweryDetailPanel = document.getElementById('breweryDetails');
-        var newDetailTitle = document.createElement('h2');
-        var newAddressParagraph = document.createElement('p');
-
-        newDetailTitle.innerHTML = breweryName;
-        newAddressParagraph.innerHTML = breweryAddress;
-
-        breweryDetailPanel.appendChild(newDetailTitle);
-        breweryDetailPanel.appendChild(newAddressParagraph);
+        populateDetailsPanel(breweryID);
 
         x$("#breweryList").removeClass('active');
         x$("#breweryDetails").addClass('active');
     });
 }
 
-function getBreweryName (id) {
+function populateDetailsPanel(id) {
+    var breweryName = getBreweryName(id);
+    var breweryAddress = getBreweryAddress(id);
+    var breweryLogoURL = getBreweryLogo(id);
+    var breweryEmail = getBreweryEmail(id);
+    var phone = getBreweryPhone(id);
+    var website = getBreweryWebsiteURL(id);
+    var twitter_handle = getBreweryTwitterHandle(id);
+    var facebook_url = getBreweryFacebookURL(id);
+
+    var breweryDetailPanel = document.getElementById('breweryDetails');
+    var newDetailTitle = document.createElement('h2');
+    var newAddressParagraph = document.createElement('p');
+    var facebookLink = document.createElement('a');
+    var twitterLink = document.createElement('a');
+    var websiteLink = document.createElement('a');
+    //x$(newWebsiteLink).addClass('test');
+    facebookLink.setAttribute("href", facebook_url);
+    twitterLink.setAttribute("href", twitter_handle);
+    websiteLink.setAttribute("href",website);
+
+    newDetailTitle.innerHTML = breweryName;
+    newAddressParagraph.innerHTML = breweryAddress;
+    facebookLink.innerHTML = 'View Facebook';
+    twitterLink.innerHTML = 'View Twitter';
+    websiteLink.innerHTML = 'View Website';
+
+    breweryDetailPanel.appendChild(newDetailTitle);
+    breweryDetailPanel.appendChild(newAddressParagraph);
+    breweryDetailPanel.appendChild(facebookLink);
+    breweryDetailPanel.appendChild(twitterLink);
+    breweryDetailPanel.appendChild(websiteLink);
+
+
+
+}
+
+function getBreweryName(id) {
     var breweryNameKey = "name." + id;
     var breweryName = window.localStorage.getItem(breweryNameKey);
     return breweryName;
@@ -134,6 +159,37 @@ function getBreweryAddress(id) {
     var breweryAddress = window.localStorage.getItem(addressKey);
     return breweryAddress;
 }
+function getBreweryLogo(id) {
+    var image_url_key = "image_url." + id;
+    var breweryImageURL = window.localStorage.getItem(image_url_key);
+    return breweryImageURL;
+}
+function getBreweryEmail(id) {
+    var email_key = "email." + id;
+    var breweryEmail = window.localStorage.getItem(email_key);
+    return breweryEmail;
+}
+function getBreweryPhone(id) {
+    var phone_key = "phone." + id;
+    var breweryPhone = window.localStorage.getItem(phone_key);
+    return breweryPhone;
+}
+function getBreweryWebsiteURL(id) {
+    var website_key = "website_url." + id;
+    var brewerySite = window.localStorage.getItem(website_key);
+    return brewerySite;
+}
+function getBreweryTwitterHandle(id) {
+    var twitter_handle_key = "twitter_handle." + id;
+    var breweryTwitterHandle = window.localStorage.getItem(twitter_handle_key);
+    return breweryTwitterHandle;
+}
+function getBreweryFacebookURL(id) {
+    var facebook_key = "facebook_url." + id;
+    var breweryFacebookURL = window.localStorage.getItem(facebook_key);
+    return breweryFacebookURL;
+}
+
 
 function addBreweryToLocalStorage(breweryArrayToStore) {
     var id = breweryArrayToStore.id;
