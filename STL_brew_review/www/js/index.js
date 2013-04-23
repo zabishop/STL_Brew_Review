@@ -17,10 +17,6 @@
  * under the License.
  */
 
-/*var aBreweryDetail = {
-    breweryName: "cereal",
-    address: ""
-}*/
 
 /*
  var app = {
@@ -54,7 +50,23 @@
  console.log('Received Event: ' + id);
  }
  };  */
-var breweries;
+
+
+var breweries = new Array(
+    
+);
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    getXHR('http://stlbrewreview.com/breweries.json', getBreweries);
+    var breweryList = document.getElementById('breweryList');
+    //var length = window.localStorage.length;
+    //var i = 0;
+    x$('ul').click(function(){
+        alert('worked');
+    });
+}, false);
+
 
 function getXHR(url, callback) {
     var req = new XMLHttpRequest();
@@ -74,86 +86,21 @@ function getXHR(url, callback) {
 function getBreweries(JSONstring) {
     var JSONobj = JSONstring
     if (typeof JSONstring == "string")  JSONobj = JSON.parse(JSONstring);
-
     var i = 1;
     for (i; i < JSONobj.length; i++) {
-        //breweries = window.localStorage.key(i);
-        //window.localStorage.key(i)
-        breweries = JSONobj[i];
-        console.log(breweries.address);
+        breweries[i] = JSONobj[i];
+        console.log(breweries[i].name);
+        console.log(breweries[i].address);
+        addBreweryToList(breweries[i]);
     }
 }
 
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    getXHR('http://stlbrewreview.com/breweries.json', getBreweries);
-    alert('you');
-    
-    test();
+function addBreweryToList(brewery){
     var breweryList = document.getElementById('breweryList');
-    //var foodField = document.getElementById('foodName');
-
-    var length = window.localStorage.length;
-    var i = 0;
-    var storedBreweryName;
-    for (i; i < length; i++) {
-        console.log(window.localStorage.key(i));
-        /*console.log(storedBreweryName = window.localStorage.key(i));
-        if (storedBreweryName.match(/^food[.]/)) {
-            addNewBrewery(window.localStorage.getItem(storedBreweryName), i)
-        } */
-    }
+    var newBrewery = brewery;
+    var newBreweryListItem = document.createElement('li');
+    newBreweryListItem.innerHTML = newBrewery.name;
+    breweryList.appendChild(newBreweryListItem);
+}
 
 
-    /*function addNewBrewery(breweryName, foodID) {
-        alert('you2');
-        var newBreweryItem = document.createElement('li');
-        newBreweryItem.innerHTML = breweryName + " (key: " + foodID + ")";
-        breweryList.appendChild(newBreweryItem);
-
-        aBreweryDetail.breweryName = breweryName;
-        document.getElementById("breweryDescription").innerHTML = markup;
-
-    }  */
-
-
-    /*for (i; i < length; i++) {
-        storedBreweryName = breweries.key(i);
-        console.log(storedBreweryName.address);
-    } */
-
-}, false);
-
-/*function renderOurTemplate(view, callback) {
-    function doRender(template, view) {
-        console.log("rending now")
-        callback(Mustache.to_html(template, view))
-    }
-
-    if (storedTemplate) {
-        console.log("template is stored - we can render immediately")
-        doRender(storedTemplate, view);
-    } else {
-        console.log("template isn't stored - need to request it");
-        var req = new XMLHttpRequest();
-        req.onreadystatechange = function () {
-            if (this.readyState == 4) {
-                if (this.status == 200 || this.status == 0) {
-                    storedTemplate = this.responseText;
-                    doRender(storedTemplate, view);
-                } else {
-                    console.log("something went wrong");
-                }
-            }
-        }
-        req.open("GET", "brewery_detail.mustache", true);
-        req.send();
-    }
-}  */
-
-/*for (var propName in jsonObj) {
- if (jsonObj.hasOwnProperty(propName)) {
- return propName;    // or do something with it and break
- }
- }*/
