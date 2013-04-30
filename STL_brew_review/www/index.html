@@ -10,16 +10,24 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css"/>
     <link rel="stylesheet" type="text/css" href="css/index.css"/>
 
-
     <title>Hello World</title>
 </head>
 <body>
 
-<h1><img src="img/stlIcon.png"><span>STL Brew Review</span></h1>
+<div id="headerWrapper">
+<h1 class="mainPageHeading"><img src="img/stlIcon.png"><span>STL Brew Review</span></h1>
+    <div id="backButton"><div id="backButtonText"></div></div>
+</div>
 
-<ul id="breweryList" class="contentPanel active"></ul>
+<div class="contentPanelLeft active">
+    <ul id="breweryList"></ul>
+</div>
 
-<ul id="breweryDetails" class="contentPanel"></ul>
+<div class="contentPanelRight">
+    <ul id="breweryDetails">
+    </ul>
+    <ul id="breweryLinks"></ul>
+</div>
 
 </body>
 

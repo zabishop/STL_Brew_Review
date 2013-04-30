@@ -3,54 +3,114 @@ html {
 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-ul.contentPanel {
-    background: white;
-    text-align: center;
-    list-style: none;
-    border-radius: 10px;
+.contentPanelLeft,
+.contentPanelRight {
+
     width: 95%;
     margin: 2.5%;
 
 }
 
-ul.contentPanel li.item {
-    padding: 10px 0;
-    display: block;
+.contentPanelLeft ul,
+.contentPanelRight ul{
+    background: white;
+    text-align: left;
+    list-style: none;
+    background: white;
     width: 100%;
-    border-bottom: 1px solid black;
-    z-index: 3;
-    cursor: pointer;
+    border-radius: 10px;
+    margin-bottom: 2.5%;
 }
 
-ul.contentPanel li:last-child {
-    border: none;
-}
-
-ul#breweryList {
+.contentPanelLeft {
     position: absolute;
-    z-index: 1;
     left: 100%;
 }
 
-ul#breweryDetails {
-    height: 100px;
+.contentPanelRight {
     position: absolute;
-    z-index: 1;
     right: 100%;
 }
+li{
+    font-size: 1em;
+    font-weight: bold;
+    color: #000000;
+    padding: 24px 0;
+}
 
-ul#breweryDetails.active,
-ul#breweryList.active{
+a {
+    color: #000000;
+    text-decoration: none;
+}
+
+#backButton {
+    position: absolute;
+    cursor: pointer;
+    font-size: .75em;
+    padding: 0 15px;
+    color: white;
+    height: 30px;
+    border-radius: 5px;
+    top: 5px;
+    left: 30px;
+    display: none;
+    background: url('../img/buttonBg.jpg');
+}
+
+#backButton #backButtonText {
+    position: relative;
+    top: 10px;
+}
+#backButton.active {
+    display: block;
+}
+li.item {
+    padding: 24px 5%;
+    display: block;
+    width: 90%;
+    border-bottom: 1px solid #ccc;
+    z-index: 3;
+    cursor: pointer;
+    background: url('../img/arrow.jpg') no-repeat 95% 50%;
+}
+
+li:last-child {
+    border: none;
+}
+
+.contentPanelRight ul#breweryLinks {
+    text-align: center;
+}
+
+.contentPanelRight ul#breweryLinks li {
+    border-bottom: 1px solid #ccc;
+}
+.contentPanelRight ul#breweryLinks li:last-child {
+    border: none;
+}
+
+.contentPanelLeft.active{
     position: absolute;
     left: 0%;
     z-index: 1;
 }
 
+.contentPanelRight.active{
+    position: absolute;
+    right: 0%;
+    z-index: 1;
+}
+
+
+#headerWrapper {
+    width: 100%;
+    height: 40px;
+    background:  #222222;;
+}
 h1 {
-  width: 100%;
-    background: #222222;
     color: white;
     font-weight: normal;
+    text-align: center;
 }
 
 h1 img {
@@ -61,4 +121,9 @@ h1 img {
 h1 span {
     position: relative;
     bottom: 10px;
+}
+
+#breweryDetails img.breweryLogo {
+    height: 100px;
+    width: 100px;
 }

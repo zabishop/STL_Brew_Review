@@ -60,7 +60,6 @@ var breweries = new Array(
 document.addEventListener("DOMContentLoaded", function () {
     getXHR('http://stlbrewreview.com/breweries.json', getBreweries);
     var breweryList = document.getElementById('breweryList');
-
 }, false);
 
 
@@ -105,48 +104,96 @@ function addBreweryToList(brewery) {
 function listenAfterContentLoaded() {
     x$(".item").click(function () {
         var breweryID = this.getAttribute('data-id');
+        var backButton = document.getElementById('backButton');
+        var backButtonText = document.getElementById('backButtonText')
         populateDetailsPanel(breweryID);
 
-        x$("#breweryList").removeClass('active');
-        x$("#breweryDetails").addClass('active');
+        x$(".contentPanelLeft").removeClass('active');
+        x$(".contentPanelRight").addClass('active');
+        x$("#backButton").addClass('active');
+
+        backButton.setAttribute('data-previous-page', 'Breweries');
+        backButtonText.innerHTML = backButton.getAttribute('data-previous-page');
     });
+    x$("#backButton").click(function () {
+        x$(".contentPanelLeft").addClass('active');
+        x$(".contentPanelRight").removeClass('active');
+        x$("#backButton").removeClass('active');
+        clearDetailsPanels();
+    });
+}
+
+function clearDetailsPanels() {
+    var breweryDetailPanel = document.getElementById('breweryDetails');
+    var breweryLinkPanel = document.getElementById('breweryLinks');
+
+    x$('#breweryLinks li').remove();
+    x$('#breweryDetails img').remove();
+    x$('#breweryDetails p').remove();
 }
 
 function populateDetailsPanel(id) {
     var breweryName = getBreweryName(id);
-    var breweryAddress = getBreweryAddress(id);
+    var breweryLocation = getBreweryAddress(id);
     var breweryLogoURL = getBreweryLogo(id);
     var breweryEmail = getBreweryEmail(id);
     var phone = getBreweryPhone(id);
     var website = getBreweryWebsiteURL(id);
     var twitter_handle = getBreweryTwitterHandle(id);
     var facebook_url = getBreweryFacebookURL(id);
+    var descriptionText = getBreweryDescription(id);
 
     var breweryDetailPanel = document.getElementById('breweryDetails');
+    var breweryLinkPanel = document.getElementById('breweryLinks');
+
     var newDetailTitle = document.createElement('h2');
-    var newAddressParagraph = document.createElement('p');
+    var newLogo = document.createElement('img');
+    var description = document.createElement('p');
     var facebookLink = document.createElement('a');
     var twitterLink = document.createElement('a');
     var websiteLink = document.createElement('a');
-    //x$(newWebsiteLink).addClass('test');
+    var phoneLink = document.createElement('a');
+    var emailLink = document.createElement('a');
+    var viewLocationLink = document.createElement('a');
+
     facebookLink.setAttribute("href", facebook_url);
     twitterLink.setAttribute("href", twitter_handle);
     websiteLink.setAttribute("href",website);
+    phoneLink.setAttribute("href", '#');
+    emailLink.setAttribute("href", '#');
+    viewLocationLink.setAttribute("href", '#');
 
+    newLogo.setAttribute("src",breweryLogoURL);
+
+    x$(description).addClass("description");
+    x$(newLogo).addClass("breweryLogo");
+
+    description.innerHTML = descriptionText;
     newDetailTitle.innerHTML = breweryName;
-    newAddressParagraph.innerHTML = breweryAddress;
+    //newAddressParagraph.innerHTML = breweryAddress;
+
+    viewLocationLink.innerHTML = "View Location";
+    phoneLink.innerHTML = 'Call Phone';
+    emailLink.innerHTML = 'Email';
     facebookLink.innerHTML = 'View Facebook';
-    twitterLink.innerHTML = 'View Twitter';
+    twitterLink.innerHTML = 'View Tweets';
     websiteLink.innerHTML = 'View Website';
 
-    breweryDetailPanel.appendChild(newDetailTitle);
-    breweryDetailPanel.appendChild(newAddressParagraph);
-    breweryDetailPanel.appendChild(facebookLink);
-    breweryDetailPanel.appendChild(twitterLink);
-    breweryDetailPanel.appendChild(websiteLink);
+    addLink(viewLocationLink);
+    addLink(phoneLink);
+    addLink(emailLink);
+    addLink(facebookLink);
+    addLink(twitterLink);
+    addLink(websiteLink);
 
+    function addLink (link) {
+       var linkWrapper = document.createElement('li');
+       linkWrapper.appendChild(link);
+        breweryLinkPanel.appendChild(linkWrapper);
+    }
 
-
+    breweryDetailPanel.appendChild(newLogo);
+    breweryDetailPanel.appendChild(description);
 }
 
 function getBreweryName(id) {
@@ -189,6 +236,11 @@ function getBreweryFacebookURL(id) {
     var breweryFacebookURL = window.localStorage.getItem(facebook_key);
     return breweryFacebookURL;
 }
+function getBreweryDescription(id) {
+    var description_key = "description." + id;
+    var breweryDescriptionText = window.localStorage.getItem(description_key);
+    return breweryDescriptionText;
+}
 
 
 function addBreweryToLocalStorage(breweryArrayToStore) {
@@ -228,4 +280,6 @@ function addBreweryToLocalStorage(breweryArrayToStore) {
     window.localStorage.setItem(twitter_handle_key, breweryArrayToStore.twitter_handle);
     window.localStorage.setItem(updated_at_key, breweryArrayToStore.updated_at);
     window.localStorage.setItem(website_url_key, breweryArrayToStore.website_url);
+
+   // alert(breweryArrayToStore.beers);
 }
