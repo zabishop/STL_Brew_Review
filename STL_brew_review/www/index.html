@@ -15,8 +15,11 @@
 <body>
 
 <div id="headerWrapper">
-<h1 class="mainPageHeading"><img src="img/stlIcon.png"><span>STL Brew Review</span></h1>
-    <div id="backButton"><div id="backButtonText"></div></div>
+    <h1 class="mainPageHeading"><img src="img/stlIcon.png"><span>STL Brew Review</span></h1>
+
+    <div id="backButton">
+        <div id="backButtonText"></div>
+    </div>
 </div>
 
 <div id="breweryListWrapper" class="active">
@@ -24,12 +27,12 @@
 </div>
 
 <div id="breweryDetailsLinksWrapper">
-    <ul id="breweryDetails"  class="panel">
+    <ul id="breweryDetails" class="panel">
         <li id="logoWrapper"></li>
         <li id="descriptionWrapper"></li>
         <li id="beerLink">Beers</li>
     </ul>
-    <ul id="breweryLinks"  class="panel"></ul>
+    <ul id="breweryLinks" class="panel"></ul>
 </div>
 
 <div id="beerListWrapper">
@@ -37,7 +40,52 @@
 </div>
 
 <div id="beerDetailsWrapper">
-    <ul id="beerDetails" class="panel"></ul>
+    <ul id="beerDetailsTop" class="panel">
+        <li id="beerLogoWrapper"></li>
+        <li id="beerDescription"></li>
+    </ul>
+    <div id="beerDetailsBottom" class="panel">
+        <ul id="beerStats">
+            <li>
+                <dt>ABV:</dt>
+                <dd id="abv"></dd>
+            </li>
+            <li>
+                <dt>IBU:</dt>
+                <dd id="ibu"></dd>
+            </li>
+            <li>
+                <dt>OG:</dt>
+                <dd id="og"></dd>
+            </li>
+            <li>
+                <dt>SRM:</dt>
+                <dd id="srm"></dd>
+            </li>
+        </ul>
+        <ul id="beerDetails">
+           <li>
+               <dt>Appearance:</dt>
+               <dd id="appearance"></dd>
+           </li>
+            <li>
+                <dt>Process:</dt>
+                <dd id="process"></dd>
+            </li>
+            <li>
+                <dt>Hops:</dt>
+                <dd id="hops"></dd>
+            </li>
+            <li>
+                <dt>Malts:</dt>
+                <dd id="malts"></dd>
+            </li>
+            <li>
+                <dt>Yeast:</dt>
+                <dd id="yeast"></dd>
+            </li>
+        </ul>
+    </div>
 </div>
 
 </body>

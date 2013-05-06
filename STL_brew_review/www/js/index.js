@@ -77,7 +77,6 @@ function getXHR(url, callback) {
     req.open('GET', url, true);
     req.send();
 }
-
 function getBreweries(JSONstring) {
     var JSONobj = JSONstring
     if (typeof JSONstring == "string")  JSONobj = JSON.parse(JSONstring);
@@ -89,7 +88,6 @@ function getBreweries(JSONstring) {
     }
     listenAfterContentLoaded();
 }
-
 function addBreweryToList(brewery) {
     var breweryList = document.getElementById('breweryList');
     var newBrewery = brewery;
@@ -99,13 +97,12 @@ function addBreweryToList(brewery) {
     breweryList.appendChild(newBreweryListItem);
     x$('#breweryList li').addClass('item');
 }
-
 function listenAfterContentLoaded() {
     x$(".item").click(function () {
         var breweryID = this.getAttribute('data-id');
         var backButton = document.getElementById('backButton');
         var backButtonText = document.getElementById('backButtonText')
-        populateDetailsPanel(breweryID);
+        populateBreweryDetailsPanel(breweryID);
 
         x$("#breweryListWrapper").removeClass('active');
         x$("#breweryDetailsLinksWrapper").addClass('active');
@@ -128,8 +125,6 @@ function listenAfterContentLoaded() {
 
         x$('#breweryDetailsLinksWrapper').removeClass('active');
         x$('#beerListWrapper').addClass('active');
-        var i = 0;
-
         parseBeers(shortName);
     });
 
@@ -141,13 +136,13 @@ function listenAfterContentLoaded() {
     });
 }
 
+
 function clearDetailsPanels() {
     x$('#breweryLinks li').remove();
     x$('#breweryDetails img').remove();
     x$('#breweryDetails p').remove();
 }
-
-function populateDetailsPanel(id) {
+function populateBreweryDetailsPanel(id) {
 
     x$('#beerLink').removeClass('item');
 
@@ -317,11 +312,11 @@ function getBeerProductionStatus(id) {
 }
 
 function getBeerMalts(id) {
-    var malts_key = "matls." + id;
+    var malts_key = "malts." + id;
     return window.localStorage.getItem(malts_key);
 }
 
-function getBeerOg(id) {
+function getBeerOG(id) {
     var og_key = "og." + id;
     return window.localStorage.getItem(og_key);
 }
@@ -336,9 +331,10 @@ function getBeerShortName(id) {
     return window.localStorage.getItem(beer_short_name_key);
 }
 
-function getBeerSrm(id) {
+function getBeerSRM(id) {
     var srm_key = "srm." + id;
     return window.localStorage.getItem(srm_key);
+
 }
 
 function getBeerUpdatedAt(id) {
@@ -350,7 +346,6 @@ function getBeerYeast(id) {
     var yeast_key = "yeast." + id;
     return window.localStorage.getItem(yeast_key);
 }
-
 
 function addBreweryToLocalStorage(breweryArrayToStore) {
     var id = breweryArrayToStore.id;
@@ -401,7 +396,7 @@ function parseBeers(shortName) {
 function getBeers(JSONstring) {
     var JSONobj = JSONstring
     if (typeof JSONstring == "string")  JSONobj = JSON.parse(JSONstring);
-    var i = 1;
+    var i = 0;
     for (i; i < JSONobj.beers.length; i++) {
         beers[i] = JSONobj.beers[i];
         addBeersToLocalStorage(beers[i]);
@@ -412,7 +407,6 @@ function getBeers(JSONstring) {
 
 function addBeersToLocalStorage(beer) {
     var id = 'b' + beer.id;
-    console.log(id);
     var id_key = "beer_id." + id;
     var abv_key = "abv." + id;
     var appearance_key = "appearance." + id;
@@ -433,11 +427,11 @@ function addBeersToLocalStorage(beer) {
     var yeast_key = "yeast." + id;
 
     window.localStorage.setItem(id_key, id);
-    window.localStorage.setItem(abv_key, beer.adv);
+    window.localStorage.setItem(abv_key, beer.abv);
     window.localStorage.setItem(appearance_key, beer.appearance);
     window.localStorage.setItem(brewery_id_key, beer.brewery_id);
     window.localStorage.setItem(created_at_key, beer.created_at);
-    window.localStorage.setItem(description_key, beer.descrption);
+    window.localStorage.setItem(description_key, beer.description);
     window.localStorage.setItem(hops_key, beer.hops);
     window.localStorage.setItem(ibu_key, beer.ibu);
     window.localStorage.setItem(image_url_key, beer.image_url);
@@ -450,7 +444,6 @@ function addBeersToLocalStorage(beer) {
     window.localStorage.setItem(srm_key, beer.srm);
     window.localStorage.setItem(updated_at_key, beer.updated_at);
     window.localStorage.setItem(yeast_key, beer.yeast);
-
 }
 
 function addBeerToList(beer) {
@@ -462,16 +455,54 @@ function addBeerToList(beer) {
     listItem.innerHTML = name;
     listItem.setAttribute('data-beer-id', id);
     list.appendChild(listItem);
-    // console.log(name);
     x$('#beerList li').addClass('beer');
 
 }
 
 
 function populateBeerDetailsPanel(beerId) {
-    var beerDetailsPanel = document.getElementById('beerDetails');
-    var detailsItem = document.createElement('li');
-    detailsItem.innerHTML = getBeerName(beerId);
-    beerDetailsPanel.appendChild(detailsItem);
 
+    var beerLogoWrapper = document.getElementById('beerLogoWrapper');
+    var beerLogo = document.createElement('img');
+    beerLogo.setAttribute('src', getBeerImageUrl(beerId));
+    beerLogoWrapper.appendChild(beerLogo);
+
+    var description = document.getElementById('beerDescription');
+    description.innerHTML = getBeerDescription(beerId);
+
+    var abv = document.getElementById('abv');
+    abv.innerHTML = getBeerADV(beerId);
+
+    var ibu = document.getElementById('ibu');
+    ibu.innerHTML = getBeerIBU(beerId);
+
+    var og = document.getElementById('og');
+    og.innerHTML = getBeerOG(beerId);
+
+    var srm = document.getElementById('srm');
+    srm.innerHTML = getBeerSRM(beerId);
+
+    var appearance = document.getElementById('appearance');
+    appearance.innerHTML = getBeerAppearance(beerId);
+
+    var process = document.getElementById('process');
+    process.innerHTML = getBeerProcess(beerId);
+
+    var hops = document.getElementById('hops');
+    hops.innerHTML = getBeerHops(beerId);
+
+    var malts = document.getElementById('malts');
+    malts.innerHTML = getBeerMalts(beerId);
+
+    var yeast = document.getElementById('yeast');
+    yeast.innerHTML = getBeerYeast(beerId);
+}
+
+function checkForNullValue(obj) {
+    if (obj == null) {
+        var returnText = ":("
+        return returnText;
+    } else {
+        return obj;
+    }
 }

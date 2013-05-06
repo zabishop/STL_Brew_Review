@@ -14,8 +14,13 @@ html {
 
 #breweryListWrapper,
 #breweryDetailsLinksWrapper,
-#beerListWrapper {
+#beerListWrapper,
+#beerDetailsWrapper {
     display: none;
+    width: 100%;
+}
+#beerDetailsWrapper {
+    width: 100%;
 }
 
 li {
@@ -39,7 +44,7 @@ a {
     height: 30px;
     border-radius: 5px;
     top: 5px;
-    left: 30px;
+    left: 10px;
     display: none;
     background: url('../img/buttonBg.jpg');
 }
@@ -86,7 +91,8 @@ ul#breweryLinks li:last-child {
 
 #breweryListWrapper.active,
 #breweryDetailsLinksWrapper.active,
-#beerListWrapper.active {
+#beerListWrapper.active,
+#beerDetailsWrapper.active {
     display: block;
 }
 
@@ -167,4 +173,56 @@ h1 span {
 
 #beerList li:last-child {
     border: none;
+}
+
+#beerStats {
+    margin-bottom: 20px;
+
+}
+
+#beerDetailsTop li {
+    padding: 0;
+    margin: 0;
+}
+
+#beerDetailsTop, #beerDetailsBottom {
+    padding:2.5% 0;
+}
+#beerDetailsTop {
+    width: 90%;
+    padding: 2.5%;
+    margin: 2.5%;
+}
+
+#beerStats li,
+#beerDetails li{
+    padding: 0 2.5%;
+    margin: 0 8px 0 0;
+    display: inline-block;
+}
+
+#beerDetails li{
+    margin: 5px 0 15px 0;
+    display: block;
+}
+
+#beerStats li dd,
+#beerDetails li dd{
+    font-weight: normal;
+}
+#beerStats li dd, #beerStats li dt {
+    display: inline-block;
+}
+#beerDetailsTop li#beerLogoWrapper {
+    width: 100px;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+#beerLogoWrapper img {
+    width: 100%;
+}
+
+#beerDescription {
+    font-weight: normal;
+    line-height: 1.25em;
 }
