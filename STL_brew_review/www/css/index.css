@@ -18,7 +18,7 @@ font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     list-style: none;
     background: white;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 2.5%;
 }
 
@@ -101,6 +101,10 @@ li:last-child {
     z-index: 1;
 }
 
+p.description {
+    padding: 10px;
+    line-height: 1.25em;
+}
 
 #headerWrapper {
     width: 100%;
@@ -123,7 +127,35 @@ h1 span {
     bottom: 10px;
 }
 
-#breweryDetails img.breweryLogo {
+#breweryDetails li {
+    padding: 0;
+    margin: 0;
+}
+
+#logoWrapper {
     height: 100px;
-    width: 100px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+#logoWrapper img.breweryLogo {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    height: 100%;
+}
+
+#descriptionWrapper {
+    font-weight: normal;
+    background: transparent;
+}
+
+#breweryDetails li#beerLink {
+    border-top: 1px solid #ccc;
+    padding: 24px 5%;
+    background: url('../img/arrow.jpg') no-repeat 95% 50%;
+    cursor: pointer;
 }

@@ -56,10 +56,11 @@ var breweries = new Array(
 
 );
 
+var beers = new Array();
+
 /* #1 */
 document.addEventListener("DOMContentLoaded", function () {
     getXHR('http://stlbrewreview.com/breweries.json', getBreweries);
-    var breweryList = document.getElementById('breweryList');
 }, false);
 
 
@@ -98,7 +99,7 @@ function addBreweryToList(brewery) {
     newBreweryListItem.setAttribute('data-id', brewery.id);
     newBreweryListItem.innerHTML = newBrewery.name;
     breweryList.appendChild(newBreweryListItem);
-    x$('li').addClass('item');
+    x$('#breweryList li').addClass('item');
 }
 
 function listenAfterContentLoaded() {
@@ -121,11 +122,28 @@ function listenAfterContentLoaded() {
         x$("#backButton").removeClass('active');
         clearDetailsPanels();
     });
+
+   x$('#beerLink').click(function(){
+       var shortName;
+       var beerLink = document.getElementById('beerLink');
+       shortName = beerLink.getAttribute('data-shortname');
+       parseBeers(shortName);
+       var i = 1;
+       //var p = 0;
+       for (i; i < beers.length; i++) {
+           var beerList = document.getElementById('beerList');
+           var beerListItem = document.createElement('li');
+           var beerName = beers[i].name;
+           beerListItem.innerHTML = beerName;
+           beerList.appendChild(beerListItem);
+           console.log(beerName)
+       }
+   });
 }
 
 function clearDetailsPanels() {
-    var breweryDetailPanel = document.getElementById('breweryDetails');
-    var breweryLinkPanel = document.getElementById('breweryLinks');
+    //var breweryDetailPanel = document.getElementById('breweryDetails');
+    //var breweryLinkPanel = document.getElementById('breweryLinks');
 
     x$('#breweryLinks li').remove();
     x$('#breweryDetails img').remove();
@@ -133,22 +151,28 @@ function clearDetailsPanels() {
 }
 
 function populateDetailsPanel(id) {
+
+    x$('#beerLink').removeClass('item');
+
+
     var breweryName = getBreweryName(id);
     var breweryLocation = getBreweryAddress(id);
-    var breweryLogoURL = getBreweryLogo(id);
+
     var breweryEmail = getBreweryEmail(id);
     var phone = getBreweryPhone(id);
     var website = getBreweryWebsiteURL(id);
     var twitter_handle = getBreweryTwitterHandle(id);
     var facebook_url = getBreweryFacebookURL(id);
-    var descriptionText = getBreweryDescription(id);
+    var breweryShortName = getBreweryShortName(id);
 
     var breweryDetailPanel = document.getElementById('breweryDetails');
     var breweryLinkPanel = document.getElementById('breweryLinks');
+    var logoWrapper = document.getElementById('logoWrapper');
+    var beerLink = document.getElementById('beerLink');
 
     var newDetailTitle = document.createElement('h2');
-    var newLogo = document.createElement('img');
-    var description = document.createElement('p');
+
+
     var facebookLink = document.createElement('a');
     var twitterLink = document.createElement('a');
     var websiteLink = document.createElement('a');
@@ -158,19 +182,13 @@ function populateDetailsPanel(id) {
 
     facebookLink.setAttribute("href", facebook_url);
     twitterLink.setAttribute("href", twitter_handle);
-    websiteLink.setAttribute("href",website);
+    websiteLink.setAttribute("href", website);
     phoneLink.setAttribute("href", '#');
     emailLink.setAttribute("href", '#');
     viewLocationLink.setAttribute("href", '#');
 
-    newLogo.setAttribute("src",breweryLogoURL);
-
-    x$(description).addClass("description");
-    x$(newLogo).addClass("breweryLogo");
-
-    description.innerHTML = descriptionText;
     newDetailTitle.innerHTML = breweryName;
-    //newAddressParagraph.innerHTML = breweryAddress;
+
 
     viewLocationLink.innerHTML = "View Location";
     phoneLink.innerHTML = 'Call Phone';
@@ -186,14 +204,28 @@ function populateDetailsPanel(id) {
     addLink(twitterLink);
     addLink(websiteLink);
 
-    function addLink (link) {
-       var linkWrapper = document.createElement('li');
-       linkWrapper.appendChild(link);
+    function addLink(link) {
+        var linkWrapper = document.createElement('li');
+        linkWrapper.appendChild(link);
         breweryLinkPanel.appendChild(linkWrapper);
     }
 
-    breweryDetailPanel.appendChild(newLogo);
-    breweryDetailPanel.appendChild(description);
+    var descriptionText = getBreweryDescription(id);
+    var description = document.createElement('p');
+    var descriptionWrapper = document.getElementById('descriptionWrapper');
+    x$(description).addClass("description");
+    description.innerHTML = descriptionText;
+    descriptionWrapper.appendChild(description);
+
+    var breweryLogoURL = getBreweryLogo(id);
+    var newLogo = document.createElement('img');
+    newLogo.setAttribute("src", breweryLogoURL);
+    x$(newLogo).addClass("breweryLogo");
+    logoWrapper.appendChild(newLogo);
+
+
+    beerLink.setAttribute('data-shortname', breweryShortName);
+
 }
 
 function getBreweryName(id) {
@@ -242,6 +274,12 @@ function getBreweryDescription(id) {
     return breweryDescriptionText;
 }
 
+function getBreweryShortName(id) {
+  var short_name_key = "short_name." + id;
+    var breweryShortName = window.localStorage.getItem(short_name_key);
+    return breweryShortName;
+}
+
 
 function addBreweryToLocalStorage(breweryArrayToStore) {
     var id = breweryArrayToStore.id;
@@ -263,6 +301,8 @@ function addBreweryToLocalStorage(breweryArrayToStore) {
     var updated_at_key = "updated_at." + id;
     var website_url_key = "website_url." + id;
 
+
+
     window.localStorage.setItem(id_key, id);
     window.localStorage.setItem(address_key, breweryArrayToStore.address);
     window.localStorage.setItem(created_at_key, breweryArrayToStore.created_at);
@@ -281,5 +321,63 @@ function addBreweryToLocalStorage(breweryArrayToStore) {
     window.localStorage.setItem(updated_at_key, breweryArrayToStore.updated_at);
     window.localStorage.setItem(website_url_key, breweryArrayToStore.website_url);
 
-   // alert(breweryArrayToStore.beers);
+    //parseBeers(beerURL);
 }
+
+function parseBeers(shortName) {
+    var beerURL = "http://stlbrewreview.com/saint_louis/breweries/" + shortName + ".json"
+    getXHR(beerURL, getBeers);
+}
+
+function getBeers(JSONstring) {
+    var JSONobj = JSONstring
+    //var brewery_id;
+    if (typeof JSONstring == "string")  JSONobj = JSON.parse(JSONstring);
+    //brewery_id = JSONobj.id;
+    var i = 1;
+    //var p = 0;
+    for (i; i < JSONobj.beers.length; i++) {
+        beers[i] = JSONobj.beers[i];
+        //addBeersToLocalStorage(beers[i]);
+    }
+}
+
+function addBeersToLocalStorage(beer) {
+ var breweryId = beer.brewery_id
+ var beerId = beer.id;
+ var beery_key = breweryId + "b" + beerId;
+
+ var id_key = "id."+id;
+ var abv_key = "abv." + id;
+ var appearance_key = "appearance." + id;
+ var brewery_id_key = "beer_brewery_id." + id;
+ var created_at_key = "beer_created_at." + id;
+ var description_key = "beer_description." +id;
+ var hops_key = "hops." + id;
+ var ibu_key = "ibu." + id;
+ var image_url_key = "beer_image_url."+id;
+ var in_production_key = "in_production." +id;
+ var malts_key = "malts." + id;
+ var name_key = "beer_name." + id;
+ var og_key = "og." + id;
+ var process_key = "process." + id;
+ var short_name_key = "beer_short_name." + id;
+ var srm_key = "srm." + id;
+ var updated_at_key = "beer_last_updated." + id;
+ var yeast_key = "yeast." + id;
+
+ window.localStorage.setItem(id_key, id);
+ window.localStorage.setItem(abv_key, beer.adv);
+ window.localStorage.setItem(appearance_key, beer.appearance);
+ window.localStorage.setItem(brewery_id_key, beer.brewery_id);
+ window.localStorage.setItem(created_at_key, beer.created_at);
+ window.localStorage.setItem(description_key, beer.descrption);
+ window.localStorage.setItem(hops_key, beer.hops);
+ window.localStorage.setItem(ibu_key, beer.ibu);
+ window.localStorage.setItem(image_url_key, beer.image_url);
+ window.localStorage.setItem(in_production_key, beer.in_production);
+ window.localStorage.setItem(malts_key, beer.malts);
+ window.localStorage.setItem(name_key, beer.name);
+ window.localStorage.setItem(og_key)
+
+ }
