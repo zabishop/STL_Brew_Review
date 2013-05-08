@@ -53,30 +53,16 @@
 
 var aBrewery = {
     name: "",
-     address: "",
-     image_url: "",
-     email: "",
-     phone: "",
-     website: "",
-     twitter_handle: "",
-     facebook: "",
-     description: "",
-     short_name: ""
-}
-
-var breweryDetails = {
-    name: "",
     address: "",
     image_url: "",
     email: "",
     phone: "",
-    website: "",
+    website_url: "",
     twitter_handle: "",
     facebook: "",
     description: "",
     short_name: ""
 }
-
 
 var aBeer = {
     name: "",
@@ -97,10 +83,11 @@ var aBeer = {
     updated_last: "",
     yeast: ""
 };
-storedTemplate = null;
+var storedTemplate = null;
 
 document.addEventListener("DOMContentLoaded", function () {
     getXHR('http://stlbrewreview.com/breweries.json', getBreweries);
+
 }, false);
 
 function getXHR(url, callback) {
@@ -121,13 +108,14 @@ function getXHR(url, callback) {
 function getBreweries(JSONstring) {
     var JSONobj = JSONstring
     if (typeof JSONstring == "string")  JSONobj = JSON.parse(JSONstring);
-    var i = 1;
+    var i = 0;
     for (i; i < JSONobj.length; i++) {
-        aBrewery.name = JSONobj[i].name;
-        breweryDetails[i] = JSONobj[i];
-        parseBeers(breweryDetails[i]);
-        addBreweryToList(aBrewery);
+        aBrewery[i] = JSONobj[i];
+        addBreweryToList(aBrewery[i], i);
+        parseBeers(aBrewery[i]);
+        console.log(aBrewery[i].has_beer);
     }
+    listenAfterContentLoaded();
 }
 
 function parseBeers(brewery) {
@@ -148,24 +136,35 @@ function getBeers(JSONstring) {
     }
 }
 
-function addBreweryToList(brewery) {
-    renderOurTemplate(aBrewery, function(markup){
-        document.getElementById("breweryList").innerHTML = markup;
+function addBreweryToList(brewery, key) {
+    var list = document.getElementById('breweryList');
+    var listItem = document.createElement('li');
+    listItem.innerHTML = brewery.name;
+    listItem.setAttribute("data-brewery-key", key);
+
+    list.appendChild(listItem);
+    x$('#breweryList li').addClass('breweryListItem');
+}
+
+function renderBreweryDetails(brewery) {
+    renderOurTemplate(brewery, function (markup) {
+        document.getElementById("breweryDetailsLinksWrapper").innerHTML = markup;
     });
 }
 
 function renderOurTemplate(view, callback) {
-    function doRender(template,view) {
+    function doRender(template, view) {
         console.log("rendering now")
         callback(Mustache.to_html(template, view))
     }
+
     if (storedTemplate) {
         console.log("template is stored = we can render immediately")
-        doRender(storedTemplate,view);
+        doRender(storedTemplate, view);
     } else {
         console.log("template isn't stored - need to request it");
         var req = new XMLHttpRequest();
-        req.onreadystatechange = function() {
+        req.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.status == 200 || this.status == 0) {
                     storedTemplate = this.responseText;
@@ -176,69 +175,60 @@ function renderOurTemplate(view, callback) {
 
             }
         }
-        req.open("get","templates/brewery.mustache", true);
+        req.open("get", "templates/brewery_details.mustache", true);
         req.send();
     }
-
 }
 
 
+function listenAfterContentLoaded() {
 
+    x$('.breweryListItem').click(function () {
+        var breweryKey = this.getAttribute('data-brewery-key');
+        renderBreweryDetails(aBrewery[breweryKey]);
+        x$('.page').removeClass('active');
+        x$('#breweryDetailsLinksWrapper').addClass('active');
+    })
 
+    /*x$(".item").click(function () {
+     var breweryID = this.getAttribute('data-id');
+     var backButton = document.getElementById('backButton');
+     var backButtonText = document.getElementById('backButtonText')
+     populateBreweryDetailsPanel(breweryID);
 
+     x$("#breweryListWrapper").removeClass('active');
+     x$("#breweryDetailsLinksWrapper").addClass('active');
+     x$("#backButton").addClass('active');
 
+     backButton.setAttribute('data-previous-page', 'Breweries');
+     backButtonText.innerHTML = backButton.getAttribute('data-previous-page');
+     });
+     x$("#backButton").click(function () {
+     x$("#breweryListWrapper").addClass('active');
+     x$("#breweryDetailsLinksWrapper").removeClass('active');
+     x$("#backButton").removeClass('active');
+     clearDetailsPanels();
+     });
 
+     x$('#beerLink').click(function () {
+     var shortName;
+     var beerLink = document.getElementById('beerLink');
+     shortName = beerLink.getAttribute('data-shortname');
 
+     x$('#breweryDetailsLinksWrapper').removeClass('active');
+     x$('#beerListWrapper').addClass('active');
+     parseBeers(shortName);
+     });
 
-
-
-
-
-
-
+     x$(".beer").click(function () {
+     var beerId = this.getAttribute('data-beer-id');
+     populateBeerDetailsPanel(beerId);
+     x$('#beerListWrapper').removeClass('active');
+     x$('#beerDetailsWrapper').addClass('active');
+     });*/
+}
 
 /*
- function listenAfterContentLoaded() {
-
- x$(".item").click(function () {
- var breweryID = this.getAttribute('data-id');
- var backButton = document.getElementById('backButton');
- var backButtonText = document.getElementById('backButtonText')
- populateBreweryDetailsPanel(breweryID);
-
- x$("#breweryListWrapper").removeClass('active');
- x$("#breweryDetailsLinksWrapper").addClass('active');
- x$("#backButton").addClass('active');
-
- backButton.setAttribute('data-previous-page', 'Breweries');
- backButtonText.innerHTML = backButton.getAttribute('data-previous-page');
- });
- x$("#backButton").click(function () {
- x$("#breweryListWrapper").addClass('active');
- x$("#breweryDetailsLinksWrapper").removeClass('active');
- x$("#backButton").removeClass('active');
- clearDetailsPanels();
- });
-
- x$('#beerLink').click(function () {
- var shortName;
- var beerLink = document.getElementById('beerLink');
- shortName = beerLink.getAttribute('data-shortname');
-
- x$('#breweryDetailsLinksWrapper').removeClass('active');
- x$('#beerListWrapper').addClass('active');
- parseBeers(shortName);
- });
-
- x$(".beer").click(function () {
- var beerId = this.getAttribute('data-beer-id');
- populateBeerDetailsPanel(beerId);
- x$('#beerListWrapper').removeClass('active');
- x$('#beerDetailsWrapper').addClass('active');
- });
- }
-
-
  function clearDetailsPanels() {
  x$('#breweryLinks li').remove();
  x$('#breweryDetails img').remove();
@@ -593,3 +583,8 @@ function renderOurTemplate(view, callback) {
  return obj;
  }
  }   */
+
+
+function goURL(url) {
+    window.open(url);
+}

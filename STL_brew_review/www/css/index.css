@@ -82,12 +82,13 @@ ul#breweryLinks {
 }
 
 ul#breweryLinks li {
+    display: block;
     border-bottom: 1px solid #ccc;
 }
 
-ul#breweryLinks li:last-child {
+/*ul#breweryLinks li:last-child {
     border: none;
-}
+} */
 
 #breweryListWrapper.active,
 #breweryDetailsLinksWrapper.active,
@@ -146,16 +147,17 @@ h1 span {
     margin: 0;
 }
 
-#logoWrapper img.breweryLogo {
+#logoWrapper img {
     text-align: center;
     display: block;
     margin: 0 auto;
     height: 100%;
 }
 
-#descriptionWrapper {
+#descriptionWrapper p{
     font-weight: normal;
-    background: transparent;
+    margin: 15px;
+    line-height: 1.25em;
 }
 
 #breweryDetails li#beerLink {
@@ -226,3 +228,14 @@ h1 span {
     font-weight: normal;
     line-height: 1.25em;
 }
+
+
+
+
+
+
+
+
+
+
+
