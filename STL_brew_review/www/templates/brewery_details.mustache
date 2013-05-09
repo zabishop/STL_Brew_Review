@@ -1,31 +1,32 @@
-    <ul id="breweryDetails" class="panel">
-        <li id="logoWrapper">
-            <img src="{{image_url}}">
-        </li>
-        <li id="descriptionWrapper">
-            <p>
-                {{description}}
-            </p>
-        </li>
-        <li id="beerLink" data-short-name="{{short_name}}" onclick="generateBeerList(this)">Beer</li>
-    </ul>
-    <ul id="breweryLinks" class="panel">
-        <li>
-           <a href="http://maps.google.com/maps?q={{address}}">View Location</a>
-        </li>
-        <li>
-           <a href="tel:{{phone}}">Call Phone</a>
-        </li>
-        <li>
-           <a href="mailto:{{email}}">Email</a>
-        </li>
-        <li>
-           <a href="{{website_url}}">View Website</a>
-        </li>
-        <li>
-           <a href="http://twitter.com/{{twitter_handle}}">View Tweets</a>
-        </li>
-        <li>
-           <a href="{{facebook_url}}">View Facebook</a>
-        </li>
-    </ul>
+<ul id="breweryDetails" class="panel">
+    <li id="logoWrapper">
+        <img src="{{image_url}}">
+    </li>
+    <li id="descriptionWrapper">
+        <p>
+            {{description}}
+        </p>
+    </li>
+    <li id="beerLink" data-short-name="{{short_name}}" onclick="parseBeersAndGenerateBeerList(this)">Beer</li>
+</ul>
+
+<ul id="breweryLinks" class="panel">
+    <li>
+        <a href="http://maps.google.com/maps?q={{address}}">View Location</a>
+    </li>
+    <li>
+        <a href="tel:{{phone}}">Call Phone</a>
+    </li>
+    <li>
+        <a href="mailto:{{email}}">Email</a>
+    </li>
+    <li>
+        <a href="{{website_url}}">View Website</a>
+    </li>
+    <li>
+        <a href="http://twitter.com/{{twitter_handle}}">View Tweets</a>
+    </li>
+    <li>
+        <a href="{{facebook_url}}">View Facebook</a>
+    </li>
+</ul>
