@@ -64,8 +64,6 @@ var aBrewery = {
     short_name: ""
 }
 
-var beerNames ={}
-
 var aBeer = {
     name: "",
     adv: "",
@@ -85,6 +83,11 @@ var aBeer = {
     updated_last: "",
     yeast: ""
 };
+
+var beers = [];
+
+var breweryBeer = {};
+
 var storedTemplate = null;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -114,15 +117,15 @@ function getBreweries(JSONstring) {
     for (i; i < JSONobj.length; i++) {
         aBrewery[i] = JSONobj[i];
         addBreweryToList(aBrewery[i], i);
-        parseBeers(aBrewery[i]);
-        console.log(aBrewery[i].has_beer);
+
     }
     listenAfterContentLoaded();
 }
 
-function parseBeers(brewery) {
-    var beerURL = "http://stlbrewreview.com/saint_louis/breweries/" + brewery.short_name + ".json"
+function parseBeers(shortname) {
+    var beerURL = "http://stlbrewreview.com/saint_louis/breweries/" + shortname + ".json";
     getXHR(beerURL, getBeers);
+
 }
 
 function getBeers(JSONstring) {
@@ -132,7 +135,9 @@ function getBeers(JSONstring) {
     if (JSONobj.beers.length > 0) {
         for (i; i < JSONobj.beers.length; i++) {
             aBeer[i] = JSONobj.beers[i];
+            beers.push(aBeer[i]);
         }
+        renderBeerList(beers, "beer_list.mustache");
     } else {
         console.log("no beers");
     }
@@ -143,7 +148,7 @@ function addBreweryToList(brewery, key) {
     var listItem = document.createElement('li');
     listItem.innerHTML = brewery.name;
     listItem.setAttribute("data-brewery-key", key);
-
+    listItem.setAttribute("data-short-name", brewery.short_name)
     list.appendChild(listItem);
     x$('#breweryList li').addClass('breweryListItem');
 }
@@ -156,7 +161,7 @@ function renderBreweryDetails(brewery, mustache_template) {
 
 function renderBeerList(beer, mustache_template) {
     renderOurTemplate(beer, mustache_template, function (markup) {
-        document.getElementById("beerList").innerHTML = markup;
+        document.getElementById("beerListWrapper").innerHTML = markup;
     });
 }
 
@@ -189,12 +194,12 @@ function renderOurTemplate(view, mustache_template, callback) {
         console.log(templatePath);
         req.open("get", templatePath, true);
         req.send();
-
     }
 }
 
-function test() {
-    renderBeerList(aBeer, "beer_list.mustache");
+function generateBeerList(brewery) {
+    var brewery = brewery.getAttribute("data-short-name");
+    parseBeers(brewery);
 }
 
 

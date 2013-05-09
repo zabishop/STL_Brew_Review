@@ -1,3 +1,5 @@
-{{#aBeer.name}}
-    <li>{{.}}</li>
-{{/aBeer.name}}
+<ul id="beerList" class="panel">
+    {{#beers}}
+        <li>{{ name }}</li>
+    {{/beers}}
+</ul>
