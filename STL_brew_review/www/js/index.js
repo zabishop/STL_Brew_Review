@@ -86,8 +86,6 @@ var aBeer = {
 
 var beers = [];
 
-var breweryBeer = {};
-
 var storedTemplate = null;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -122,6 +120,11 @@ function getBreweries(JSONstring) {
     listenAfterContentLoaded();
 }
 
+function generateBeerList(brewery) {
+    var brewery = brewery.getAttribute("data-short-name");
+    parseBeers(brewery);
+}
+
 function parseBeers(shortname) {
     var beerURL = "http://stlbrewreview.com/saint_louis/breweries/" + shortname + ".json";
     getXHR(beerURL, getBeers);
@@ -137,7 +140,7 @@ function getBeers(JSONstring) {
             aBeer[i] = JSONobj.beers[i];
             beers.push(aBeer[i]);
         }
-        renderBeerList(beers, "beer_list.mustache");
+        beginRender(beers, "beer_list.mustache", "beerListWrapper");
     } else {
         console.log("no beers");
     }
@@ -153,15 +156,9 @@ function addBreweryToList(brewery, key) {
     x$('#breweryList li').addClass('breweryListItem');
 }
 
-function renderBreweryDetails(brewery, mustache_template) {
+function beginRender(brewery, mustache_template, destination) {
     renderOurTemplate(brewery, mustache_template, function (markup) {
-        document.getElementById("breweryDetailsLinksWrapper").innerHTML = markup;
-    });
-}
-
-function renderBeerList(beer, mustache_template) {
-    renderOurTemplate(beer, mustache_template, function (markup) {
-        document.getElementById("beerListWrapper").innerHTML = markup;
+        document.getElementById(destination).innerHTML = markup;
     });
 }
 
@@ -197,17 +194,11 @@ function renderOurTemplate(view, mustache_template, callback) {
     }
 }
 
-function generateBeerList(brewery) {
-    var brewery = brewery.getAttribute("data-short-name");
-    parseBeers(brewery);
-}
-
-
 function listenAfterContentLoaded() {
 
     x$('.breweryListItem').click(function () {
         var breweryKey = this.getAttribute('data-brewery-key');
-        renderBreweryDetails(aBrewery[breweryKey], "brewery_details.mustache");
+        beginRender(aBrewery[breweryKey], "brewery_details.mustache", "breweryDetailsLinksWrapper");
         x$('.page').removeClass('active');
         x$('#breweryDetailsLinksWrapper').addClass('active');
     })
