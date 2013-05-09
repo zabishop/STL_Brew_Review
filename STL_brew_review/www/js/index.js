@@ -193,16 +193,6 @@ function renderOurTemplate(view, mustache_template, callback) {
     }
 }
 
-/*function listenAfterContentLoaded() {
-
-    x$('.breweryListItem').click(function () {
-        var breweryKey = this.getAttribute('data-brewery-key');
-        beginRender(aBrewery[breweryKey], "brewery_details.mustache", "breweryDetailsLinksWrapper");
-        x$('.page').removeClass('active');
-        x$('#breweryDetailsLinksWrapper').addClass('active');
-    })
-}*/
-
 function goURL(url) {
     window.open(url);
 }
