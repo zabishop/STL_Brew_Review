@@ -156,6 +156,9 @@ function beginRender(brewery, mustache_template, destination) {
     });
 }
 
+
+
+
 function renderOurTemplate(view, mustache_template, callback) {
     storedTemplate = null;
     function doRender(template, view) {
