@@ -118,9 +118,19 @@ function getBreweries(JSONstring) {
     listenAfterContentLoaded();
 }
 
+<<<<<<< HEAD
 function parseBeersAndGenerateBeerList(brewery) {
     var brewery = brewery.getAttribute("data-short-name");
     var beerURL = "http://stlbrewreview.com/saint_louis/breweries/" + brewery + ".json";
+=======
+function generateBeerList(brewery) {
+    var brewery = brewery.getAttribute("data-short-name");
+    parseBeers(brewery);
+}
+
+function parseBeers(shortname) {
+    var beerURL = "http://stlbrewreview.com/saint_louis/breweries/" + shortname + ".json";
+>>>>>>> 589091569f4d4745ff0b5a4ebf7a584ad27c76cd
     getXHR(beerURL, getBeers);
 }
 
