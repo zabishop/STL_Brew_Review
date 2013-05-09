@@ -1,0 +1,15 @@
+<div id="headerWrapper">
+    <h1 class="mainPageHeading"><img src="img/stlIcon.png"><span>STL Brew Review</span></h1>
+
+    <div id="backButton">
+        <div id="backButtonText"></div>
+    </div>
+</div>
+
+<div id="breweryListWrapper" class="page active">
+    <ul class="panel" id="breweryList">
+        {{#breweries}}
+            <li data-brewery-id="{{id}}" onclick="getAndRenderBreweryDetails({{key}})">{{name}}</li>
+        {{/breweries}}
+    </ul>
+</div>

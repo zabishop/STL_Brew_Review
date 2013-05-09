@@ -52,6 +52,7 @@
  };  */
 
 var aBrewery = {
+    key: "",
     name: "",
     address: "",
     image_url: "",
@@ -84,6 +85,7 @@ var aBeer = {
     yeast: ""
 };
 
+var breweries = [];
 var beers = [];
 
 var storedTemplate = null;
@@ -113,15 +115,21 @@ function getBreweries(JSONstring) {
     var i = 0;
     for (i; i < JSONobj.length; i++) {
         aBrewery[i] = JSONobj[i];
-        addBreweryToList(aBrewery[i], i);
+        aBrewery[i].key = i;
+        //addBreweryToList(aBrewery[i], i);
+        breweries.push(aBrewery[i]);
     }
-    listenAfterContentLoaded();
+    beginRender({"breweries":breweries}, "brewery_list.mustache", "screen");
 }
 
 function parseBeersAndGenerateBeerList(brewery) {
     var brewery = brewery.getAttribute("data-short-name");
     var beerURL = "http://stlbrewreview.com/saint_louis/breweries/" + brewery + ".json";
     getXHR(beerURL, getBeers);
+}
+
+function getAndRenderBreweryDetails(breweryKey) {
+    beginRender(aBrewery[breweryKey], "brewery_details.mustache", "screen");
 }
 
 function getBeers(JSONstring) {
@@ -131,23 +139,13 @@ function getBeers(JSONstring) {
     if (JSONobj.beers.length > 0) {
         for (i; i < JSONobj.beers.length; i++) {
             aBeer[i] = JSONobj.beers[i];
-            console.log(aBeer[i].name);
             beers.push(aBeer[i]);
+            console.log("beer " + [i] +": "+ beers[i].name);
         }
-        beginRender(beers, "beer_list.mustache", "beerListWrapper");
+        beginRender({"beers":beers}, "beer_list.mustache", "screen");
     } else {
         console.log("no beers");
     }
-}
-
-function addBreweryToList(brewery, key) {
-    var list = document.getElementById('breweryList');
-    var listItem = document.createElement('li');
-    listItem.innerHTML = brewery.name;
-    listItem.setAttribute("data-brewery-key", key);
-    listItem.setAttribute("data-short-name", brewery.short_name)
-    list.appendChild(listItem);
-    x$('#breweryList li').addClass('breweryListItem');
 }
 
 function beginRender(brewery, mustache_template, destination) {
@@ -155,7 +153,6 @@ function beginRender(brewery, mustache_template, destination) {
         document.getElementById(destination).innerHTML = markup;
     });
 }
-
 
 function renderOurTemplate(view, mustache_template, callback) {
     storedTemplate = null;
@@ -189,7 +186,7 @@ function renderOurTemplate(view, mustache_template, callback) {
     }
 }
 
-function listenAfterContentLoaded() {
+/*function listenAfterContentLoaded() {
 
     x$('.breweryListItem').click(function () {
         var breweryKey = this.getAttribute('data-brewery-key');
@@ -197,7 +194,7 @@ function listenAfterContentLoaded() {
         x$('.page').removeClass('active');
         x$('#breweryDetailsLinksWrapper').addClass('active');
     })
-}
+}*/
 
 function goURL(url) {
     window.open(url);
