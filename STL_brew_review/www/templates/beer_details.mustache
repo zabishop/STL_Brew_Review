@@ -1,5 +1,5 @@
 <div id="headerWrapper">
-    <h1 class="mainPageHeading"><img src="img/stlIcon.png"><span>STL Brew Review</span></h1>
+    <h1 class="mainPageHeading">{{name}}</h1>
 
     <div id="backButton">
         <div id="backButtonText"></div>
@@ -8,48 +8,48 @@
 
 
 <ul id="beerDetailsTop" class="panel">
-    <li id="beerLogoWrapper"></li>
-    <li id="beerDescription"></li>
+    <li id="beerLogoWrapper"><img src="{{image_url}}"></li>
+    <li id="beerDescription"><p>{{description}}</p></li>
 </ul>
 <div id="beerDetailsBottom" class="panel">
     <ul id="beerStats">
         <li>
             <dt>ABV:</dt>
-            <dd></dd>
+            <dd>{{abv}}</dd>
         </li>
         <li>
             <dt>IBU:</dt>
-            <dd></dd>
+            <dd>{{ibu}}</dd>
         </li>
         <li>
             <dt>OG:</dt>
-            <dd></dd>
+            <dd>{{og}}</dd>
         </li>
         <li>
             <dt>SRM:</dt>
-            <dd></dd>
+            <dd>{{srm}}</dd>
         </li>
     </ul>
     <ul id="beerDetails">
         <li>
             <dt>Appearance:</dt>
-            <dd></dd>
+            <dd>{{appearance}}</dd>
         </li>
         <li>
             <dt>Process:</dt>
-            <dd></dd>
+            <dd>{{process}}</dd>
         </li>
         <li>
             <dt>Hops:</dt>
-            <dd></dd>
+            <dd>{{hops}}</dd>
         </li>
         <li>
             <dt>Malts:</dt>
-            <dd></dd>
+            <dd>{{malts}}</dd>
         </li>
         <li>
             <dt>Yeast:</dt>
-            <dd></dd>
+            <dd>{{yeast}}</dd>
         </li>
     </ul>
 </div>

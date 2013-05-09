@@ -1,5 +1,5 @@
 <div id="headerWrapper">
-    <h1 class="mainPageHeading">STL Brew Review</h1>
+    <h1 class="mainPageHeading">List of Beers</h1>
 
     <div id="backButton">
         <div id="backButtonText"></div>
@@ -9,6 +9,6 @@
 
 <ul id="beerList" class="panel">
     {{#beers}}
-        <li data-beer-id="{{id}}">{{ name }}</li>
+        <li onclick="getAndRenderBeerDetails({{key}})">{{ name }}</li>
     {{/beers}}
 </ul>

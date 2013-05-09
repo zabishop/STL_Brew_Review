@@ -66,6 +66,7 @@ var aBrewery = {
 }
 
 var aBeer = {
+    key: "",
     name: "",
     adv: "",
     appearance: "",
@@ -132,6 +133,11 @@ function getAndRenderBreweryDetails(breweryKey) {
     beginRender(aBrewery[breweryKey], "brewery_details.mustache", "screen");
 }
 
+function getAndRenderBeerDetails(beerKey) {
+    console.log("beer id test on beer: " + aBeer[beerKey].name);
+    beginRender(aBeer[beerKey], "beer_details.mustache", "screen");
+}
+
 function getBeers(JSONstring) {
     var JSONobj = JSONstring
     if (typeof JSONstring == "string")  JSONobj = JSON.parse(JSONstring);
@@ -139,8 +145,9 @@ function getBeers(JSONstring) {
     if (JSONobj.beers.length > 0) {
         for (i; i < JSONobj.beers.length; i++) {
             aBeer[i] = JSONobj.beers[i];
+            aBeer[i].key = i;
             beers.push(aBeer[i]);
-            console.log("beer " + [i] +": "+ beers[i].name);
+            console.log("beer key " + [i] +": "+ aBeer[i].key);
         }
         beginRender({"beers":beers}, "beer_list.mustache", "screen");
     } else {
