@@ -64,6 +64,8 @@ var aBrewery = {
     short_name: ""
 }
 
+var beerNames ={}
+
 var aBeer = {
     name: "",
     adv: "",
@@ -146,13 +148,20 @@ function addBreweryToList(brewery, key) {
     x$('#breweryList li').addClass('breweryListItem');
 }
 
-function renderBreweryDetails(brewery) {
-    renderOurTemplate(brewery, function (markup) {
+function renderBreweryDetails(brewery, mustache_template) {
+    renderOurTemplate(brewery, mustache_template, function (markup) {
         document.getElementById("breweryDetailsLinksWrapper").innerHTML = markup;
     });
 }
 
-function renderOurTemplate(view, callback) {
+function renderBeerList(beer, mustache_template) {
+    renderOurTemplate(beer, mustache_template, function (markup) {
+        document.getElementById("beerList").innerHTML = markup;
+    });
+}
+
+function renderOurTemplate(view, mustache_template, callback) {
+    storedTemplate = null;
     function doRender(template, view) {
         console.log("rendering now")
         callback(Mustache.to_html(template, view))
@@ -161,6 +170,7 @@ function renderOurTemplate(view, callback) {
     if (storedTemplate) {
         console.log("template is stored = we can render immediately")
         doRender(storedTemplate, view);
+
     } else {
         console.log("template isn't stored - need to request it");
         var req = new XMLHttpRequest();
@@ -175,9 +185,16 @@ function renderOurTemplate(view, callback) {
 
             }
         }
-        req.open("get", "templates/brewery_details.mustache", true);
+        var templatePath = "templates/" + mustache_template;
+        console.log(templatePath);
+        req.open("get", templatePath, true);
         req.send();
+
     }
+}
+
+function test() {
+    renderBeerList(aBeer, "beer_list.mustache");
 }
 
 
@@ -185,10 +202,11 @@ function listenAfterContentLoaded() {
 
     x$('.breweryListItem').click(function () {
         var breweryKey = this.getAttribute('data-brewery-key');
-        renderBreweryDetails(aBrewery[breweryKey]);
+        renderBreweryDetails(aBrewery[breweryKey], "brewery_details.mustache");
         x$('.page').removeClass('active');
         x$('#breweryDetailsLinksWrapper').addClass('active');
     })
+
 
     /*x$(".item").click(function () {
      var breweryID = this.getAttribute('data-id');
@@ -210,7 +228,7 @@ function listenAfterContentLoaded() {
      clearDetailsPanels();
      });
 
-     x$('#beerLink').click(function () {
+
      var shortName;
      var beerLink = document.getElementById('beerLink');
      shortName = beerLink.getAttribute('data-shortname');
