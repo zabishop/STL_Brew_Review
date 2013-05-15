@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 /*
  var app = {
  // Application Constructor
@@ -93,6 +92,9 @@ var storedTemplate = null;
 
 document.addEventListener("DOMContentLoaded", function () {
     getXHR('http://stlbrewreview.com/breweries.json', getBreweries);
+    x$('html').scroll(function(){
+
+    });
 }, false);
 
 function getXHR(url, callback) {
@@ -117,31 +119,53 @@ function getBreweries(JSONstring) {
     for (i; i < JSONobj.length; i++) {
         aBrewery[i] = JSONobj[i];
         aBrewery[i].key = i;
-        //addBreweryToList(aBrewery[i], i);
         breweries.push(aBrewery[i]);
     }
-    beginRender({"breweries":breweries}, "brewery_list.mustache", "screen");
+    beginRender({"breweries":breweries}, "brewery_list.mustache", "breweryListScreen");
+    /*x$('#breweryListScreen').addClass('active');*/
 }
 
 function parseBeersAndGenerateBeerList(brewery) {
     var brewery = brewery.getAttribute("data-short-name");
     var beerURL = "http://stlbrewreview.com/saint_louis/breweries/" + brewery + ".json";
+
+    x$('.screen').removeClass('active');
+    x$('.screen').removeClass('previousScreen');
+    x$('.screen').removeClass('nextScreen');
+
+    x$('#breweryDetailsScreen').addClass('previousScreen');
+    x$('#beerListScreen').addClass('active');
+    x$('#beerDetailsScreen').addClass('nextScreen');
     getXHR(beerURL, getBeers);
 }
 
 function getAndRenderBreweryDetails(breweryKey) {
-    beginRender(aBrewery[breweryKey], "brewery_details.mustache", "screen");
+    beginRender(aBrewery[breweryKey], "brewery_details.mustache", "breweryDetailsScreen");
+    x$('.screen').removeClass('active');
+    x$('.screen').removeClass('previousScreen');
+    x$('.screen').removeClass('nextScreen');
+
+    x$('#breweryListScreen').addClass('previousScreen');
+    x$('#breweryDetailsScreen').addClass('active');
+    x$('#beerListScreen').addClass('nextScreen');
 }
 
 function getAndRenderBeerDetails(beerKey) {
-    console.log("beer id test on beer: " + aBeer[beerKey].name);
-    beginRender(aBeer[beerKey], "beer_details.mustache", "screen");
+    beginRender(aBeer[beerKey], "beer_details.mustache", "beerDetailsScreen");
+    x$('.screen').removeClass('previousScreen');
+    x$('.screen').removeClass('active');
+    x$('.screen').removeClass('nextScreen');
+
+    x$('#beerListScreen').addClass('previousScreen');
+    x$('#beerDetailsScreen').addClass('active');
+
 }
 
 function getBeers(JSONstring) {
     var JSONobj = JSONstring
     if (typeof JSONstring == "string")  JSONobj = JSON.parse(JSONstring);
     var i = 0;
+    beers = [];
     if (JSONobj.beers.length > 0) {
         for (i; i < JSONobj.beers.length; i++) {
             aBeer[i] = JSONobj.beers[i];
@@ -149,7 +173,7 @@ function getBeers(JSONstring) {
             beers.push(aBeer[i]);
             console.log("beer key " + [i] +": "+ aBeer[i].key);
         }
-        beginRender({"beers":beers}, "beer_list.mustache", "screen");
+        beginRender({"beers":beers}, "beer_list.mustache", "beerListScreen");
     } else {
         console.log("no beers");
     }
@@ -191,7 +215,19 @@ function renderOurTemplate(view, mustache_template, callback) {
         req.open("get", templatePath, true);
         req.send();
     }
+
 }
+
+function backButtonClicked (buttonNumber) {
+    var backButtonToSearchFor = "backButton" + buttonNumber;
+    var backButton = document.getElementById(backButtonToSearchFor);
+    var previousPage = backButton.getAttribute("data-previous-page");
+    x$('.screen').removeClass('previousScreen');
+    x$('.screen').removeClass('active');
+    document.getElementById(previousPage).className += " active";
+}
+
+
 
 function goURL(url) {
     window.open(url);

@@ -12,17 +12,6 @@ html {
     border-radius: 5px;
 }
 
-#breweryListWrapper,
-#breweryDetailsLinksWrapper,
-#beerListWrapper,
-#beerDetailsWrapper {
-    display: none;
-    width: 100%;
-}
-#beerDetailsWrapper {
-    width: 100%;
-}
-
 li {
     font-size: 1em;
     font-weight: bold;
@@ -35,7 +24,18 @@ a {
     text-decoration: none;
 }
 
-#backButton {
+#breweryList li {
+    border-bottom: 1px solid #ccc;
+    padding: 24px 5%;
+    background: url('../img/arrow.jpg') no-repeat 95% 50%;
+
+}
+
+#breweryList li:last-child {
+    border-bottom: none;
+}
+
+/*#backButton {
     position: absolute;
     cursor: pointer;
     font-size: .75em;
@@ -56,7 +56,7 @@ a {
 
 #backButton.active {
     display: block;
-}
+}*/
 
 li.item {
     padding: 24px 5%;
@@ -86,16 +86,41 @@ ul#breweryLinks li {
     border-bottom: 1px solid #ccc;
 }
 
-/*ul#breweryLinks li:last-child {
-    border: none;
-} */
-
-#breweryListWrapper.active,
-#breweryDetailsLinksWrapper.active,
-#beerListWrapper.active,
-#beerDetailsWrapper.active {
-    display: block;
+ul#breweryLinks li:last-child {
+    border-bottom: none;
 }
+
+
+#breweryListScreen,
+#breweryDetailsScreen,
+#beerListScreen,
+#beerDetailsScreen {
+    /*display: none;*/
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    -webkit-transition-duration: 600ms;
+    -webkit-transition-property: opacity 0;
+    -webkit-transform: translate(100%, 0px);
+}
+
+
+#breweryListScreen.active,
+#breweryDetailsScreen.active,
+#beerListScreen.active,
+#beerDetailsScreen.active {
+    -webkit-transform: translate(0px, 0px);
+}
+
+#breweryListScreen.previousScreen,
+#breweryDetailsScreen.previousScreen,
+#beerListScreen.previousScreen,
+#beerDetailsScreen.previousScreen {
+    display: none;
+   /*-webkit-transform: translate(100%, 0);*/
+}
+
 
 p.description {
     padding: 10px;
@@ -105,23 +130,39 @@ p.description {
 #headerWrapper {
     width: 100%;
     height: 40px;
-    background: #222222;;
+    background: #222222;
+    vertical-align: middle;
 }
 
-h1 {
+#headerWrapper button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+}
+
+.screen #headerWrapper {
     color: white;
     font-weight: normal;
     text-align: center;
+    position: fixed;
+    top: 0;
 }
 
 h1 img {
     padding: 3px;
     margin-left: 5%;
+
 }
 
 h1 span {
     position: relative;
     bottom: 10px;
+}
+
+h1 .noImage {
+   position: relative;
+    top: 10px;
 }
 
 #breweryDetailsLinksWrapper {
@@ -141,10 +182,10 @@ h1 span {
 #logoWrapper {
     height: 100px;
     width: 100%;
+    display: block;
+
     border: none;
     background: transparent;
-    padding: 0;
-    margin: 0;
 }
 
 #logoWrapper img {
@@ -154,10 +195,20 @@ h1 span {
     height: 100%;
 }
 
-#descriptionWrapper p{
+#descriptionWrapper p {
     font-weight: normal;
     margin: 15px;
     line-height: 1.25em;
+    min-height: 125px;
+
+}
+
+#descriptionWrapper p img {
+    width: 25%;
+    max-width: 125px;
+    float: left;
+    margin-right: 8px;
+    margin-bottom: 5px;
 }
 
 #breweryDetails li#beerLink {
@@ -165,6 +216,10 @@ h1 span {
     padding: 24px 5%;
     background: url('../img/arrow.jpg') no-repeat 95% 50%;
     cursor: pointer;
+}
+
+#beerList, #breweryDetails, #breweryListWrapper, #beerDetailsTop {
+    margin-top: 50px;
 }
 #beerList li {
     border-bottom: 1px solid #ccc;
@@ -194,6 +249,7 @@ h1 span {
     width: 90%;
     padding: 2.5%;
     margin: 2.5%;
+    margin-top: 50px;
 }
 
 #beerStats li,

@@ -1,14 +1,14 @@
 <div id="headerWrapper">
-    <h1 class="mainPageHeading">{{name}}</h1>
+    <button id="backButton" onclick="backButtonClicked(1)" data-previous-page="breweryListScreen">Back</button>
+    <h1 class="mainPageHeading"><div class="noImage">{{name}}</div></h1>
 </div>
 
 
 <ul id="breweryDetails" class="panel">
-    <li id="logoWrapper">
-        <img src="{{image_url}}">
-    </li>
+    <br/>
     <li id="descriptionWrapper">
         <p>
+            <img src="{{image_url}}">
             {{description}}
         </p>
     </li>
@@ -18,22 +18,22 @@
 </ul>
 
 <ul id="breweryLinks" class="panel">
-    <li>
-        <a href="http://maps.google.com/maps?q={{address}}">View Location</a>
+    <li onclick="goURL('http://maps.google.com/maps?q={{address}}')">
+        View Location
     </li>
-    <li>
-        <a href="tel:{{phone}}">Call Phone</a>
+    <li onclick="goURL('tel:{{phone}}')">
+        Call Phone
     </li>
-    <li>
-        <a href="mailto:{{email}}">Email</a>
+    <li onclick="goURL('mailto:{{email}}')">
+        Email
     </li>
-    <li>
-        <a href="{{website_url}}">View Website</a>
+    <li onclick="goURL('{{website_url}}')">
+        View Website
     </li>
-    <li>
-        <a href="http://twitter.com/{{twitter_handle}}">View Tweets</a>
+    <li onclick="goURL('http://twitter.com/{{twitter_handle}}')">
+        View Tweets
     </li>
-    <li>
-        <a href="{{facebook_url}}">View Facebook</a>
+    <li onclick="goURL('{{facebook_url}}')">
+        View Facebook
     </li>
 </ul>
