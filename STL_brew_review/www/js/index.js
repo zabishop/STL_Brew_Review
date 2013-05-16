@@ -176,6 +176,7 @@ function getBeers(JSONstring) {
         beginRender({"beers":beers}, "beer_list.mustache", "beerListScreen");
     } else {
         console.log("no beers");
+        beginRender({"beers":beers}, "no_beer.mustache", "beerListScreen");
     }
 }
 

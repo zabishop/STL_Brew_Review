@@ -35,21 +35,11 @@ a {
     border-bottom: none;
 }
 
-/*#backButton {
-    position: absolute;
-    cursor: pointer;
-    font-size: .75em;
-    padding: 0 15px;
-    color: white;
-    height: 30px;
-    border-radius: 5px;
-    top: 5px;
-    left: 10px;
-    display: none;
-    background: url('../img/buttonBg.jpg');
+button {
+
 }
 
-#backButton #backButtonText {
+/*#backButton #backButtonText {
     position: relative;
     top: 10px;
 }
@@ -95,14 +85,14 @@ ul#breweryLinks li:last-child {
 #breweryDetailsScreen,
 #beerListScreen,
 #beerDetailsScreen {
-    /*display: none;*/
+    display: none;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    -webkit-transition-duration: 600ms;
+    /*-webkit-transition-duration: 600ms;
     -webkit-transition-property: opacity 0;
-    -webkit-transform: translate(100%, 0px);
+    -webkit-transform: translate(100%, 0px);*/
 }
 
 
@@ -110,7 +100,8 @@ ul#breweryLinks li:last-child {
 #breweryDetailsScreen.active,
 #beerListScreen.active,
 #beerDetailsScreen.active {
-    -webkit-transform: translate(0px, 0px);
+    display: block;
+    /*-webkit-transform: translate(0px, 0px); */
 }
 
 #breweryListScreen.previousScreen,
@@ -136,9 +127,17 @@ p.description {
 
 #headerWrapper button {
     position: absolute;
-    top: 10px;
+    top: 8px;
     left: 10px;
     z-index: 10;
+    position: absolute;
+    cursor: pointer;
+    font-size: .75em;
+    padding: 0 15px;
+    color: white;
+    height: 25px;
+    background: black;
+    border-radius: 5px;
 }
 
 .screen #headerWrapper {
@@ -285,8 +284,12 @@ h1 .noImage {
     line-height: 1.25em;
 }
 
-
-
+#noBeer {
+    width: 90%;
+    padding: 2.5%;
+    margin: 2.5%;
+    margin-top: 50px;
+}
 
 
 
